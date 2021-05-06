@@ -19,6 +19,10 @@ class Quiz extends Model
         'start_date',
         'end_date',
         'status',
-        'subject_id'
+        'subject_id',
+        'note',
+        'release_remark',
+        'can_see_answer',
+        'can_see_points'
     ];
 }
