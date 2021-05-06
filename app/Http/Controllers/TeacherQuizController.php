@@ -68,6 +68,10 @@ class TeacherQuizController extends Controller
         $quiz->end_date = $request->quizEndDate;
         $quiz->status = 1;
         $quiz->subject_id = $request->subject_id;
+        $quiz->note = $request->quizNote;
+        $quiz->when_release_remark = $request->quizReleaseRemark;
+        $quiz->can_see_answer = $request->quizCanSeeAnswer;
+        $quiz->can_see_points = $request->quizCanSeePoints;
 
         $quiz->save();
 
