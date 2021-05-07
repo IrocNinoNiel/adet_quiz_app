@@ -12,10 +12,10 @@ class StudentSubjectController extends Controller
     
     public function index()
     {
-        $subject = SubjectMember::where('user_id','=',Auth::user()->id)
-            ->where('status','=',1)
-            ->orderBy('created_at','desc')->with(['user'])
-            ->get();
+        // $subject = SubjectMember::where('user_id','=',Auth::user()->id)
+        //     ->where('status','=',1)
+        //     ->orderBy('created_at','desc')->with(['user'])
+        //     ->get();
 
         // return view('student.index')->with('subjects',$subject);
     }
@@ -30,15 +30,23 @@ class StudentSubjectController extends Controller
         $code = Subject::where('code',$request->subjectCode)->get();
 
         if(count($code) == 0) {
-            return abort(404);
+            return back()->with('error','Invalid Code');
         }
 
+        foreach(Auth::user()->member as $member){
+            echo $member;
+            if($member->subject->code == $code[0]->code) return back()->with('error','You are already a Member');
+        }
+       
         $member = new SubjectMember();
+
         $member->subject_id = $code[0]->id;
         $member->user_id = Auth::user()->id;
         $member->status = 1;
 
         $member->save();
+
+        return redirect('/home')->with('success','Succesfully Joined');
 
         // $subject = SubjectMember::where('user_id','=',Auth::user()->id)
         //     ->where('status','=',1)

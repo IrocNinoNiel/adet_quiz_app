@@ -20,4 +20,8 @@ class Subject extends Model
     public function user(){
         return $this->belongsTo(User::class);
     }
+
+    public function quiz(){
+        return $this->hasMany(Quiz::class);
+    }
 }

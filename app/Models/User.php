@@ -47,4 +47,12 @@ class User extends Authenticatable
         // return $this->types->contains('id',$id);
         return $this->belongsTo(UserType::class);
     }
+
+    public function subject(){
+        return $this->hasMany(Subject::class);
+    }
+
+    public function member(){
+        return $this->hasMany(SubjectMember::class);
+    }
 }

@@ -14,4 +14,12 @@ class SubjectMember extends Model
         'user_id',
         'status'
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function subject(){
+        return $this->belongsTo(Subject::class);
+    }
 }
