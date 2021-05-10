@@ -26,7 +26,7 @@
                     @foreach(Auth::user()->subject as $subject)
                         <div class="col-md-4 ">
                             <div class="col-md-12 text-center pt-2 bg-gray text-dark">
-                                <a href="/quizlist"><img class="img-thumbnail" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt=""></a>
+                                <a href="{{ route('teachersubject.show',$subject->id )}}"><img class="img-thumbnail" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt=""></a>
                                 <h5 class="mt-2">{{$subject->name}}</h5>
                             </div>
                         </div>
@@ -35,7 +35,7 @@
                     @foreach(Auth::user()->member as $member)
                         <div class="col-md-4 ">
                             <div class="col-md-12 text-center pt-2 bg-gray text-dark">
-                                <a href="/quizlist"><img class="img-thumbnail" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt=""></a>
+                                <a href="{{ route('studentsubject.show',$member->subject->id)}}"><img class="img-thumbnail" src="https://www.planetware.com/wpimages/2020/02/france-in-pictures-beautiful-places-to-photograph-eiffel-tower.jpg" alt=""></a>
                                 <h5 class="mt-2">{{$member->subject->name}}</h5>
                             </div>
                         </div>

@@ -29,5 +29,5 @@ Route::group(['middleware' => 'CheckRole:teacher'],function(){
 // Student Side
 Route::group(['middleware' => 'CheckRole:student'],function(){
     Route::post('/studentsubject',[App\Http\Controllers\StudentSubjectController::class,'join'])->name('studentsubject.join');
-    // Route::get('/studentsubject',[App\Http\Controllers\StudentSubjectController::class,'index'])->name('studentsubject.index');
+    Route::get('/studentsubject/{id}',[App\Http\Controllers\StudentSubjectController::class,'show'])->name('studentsubject.show');
 });

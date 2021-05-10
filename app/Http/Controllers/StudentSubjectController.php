@@ -57,6 +57,14 @@ class StudentSubjectController extends Controller
         
     }
 
+    public function show($id){
+
+        $subject = Subject::find($id);
+        if(is_null($subject)) abort(404);
+
+        return view('student.subject.show')->with('subject',$subject);
+    }
+
     public function destroy($id)
     {
         $subject = SubjectMember::where('user_id','=',Auth::user()->id)

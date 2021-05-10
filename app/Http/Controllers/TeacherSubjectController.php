@@ -80,7 +80,10 @@ class TeacherSubjectController extends Controller
 
     public function show($id)
     {
-        //
+        $subject = Subject::find($id);
+        if(is_null($subject)) abort(404);
+
+        return view('teacher.subject.show')->with('subject',$subject);
     }
 
     public function edit($id)
@@ -96,7 +99,7 @@ class TeacherSubjectController extends Controller
 
     public function destroy($id)
     {
-        $subject = SubjectMember::where('user_id','=',Auth::user()->id)
+        $subject = Subject::where('user_id','=',Auth::user()->id)
             ->where('subject_id','=',$id)
             ->where('status','=',1)
             ->orderBy('created_at','desc')->with(['user'])
