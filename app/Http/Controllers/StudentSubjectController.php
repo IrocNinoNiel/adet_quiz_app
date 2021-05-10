@@ -17,7 +17,7 @@ class StudentSubjectController extends Controller
         //     ->orderBy('created_at','desc')->with(['user'])
         //     ->get();
 
-        // return view('student.index')->with('subjects',$subject);
+        return view('student.subject.index');
     }
 
     

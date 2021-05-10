@@ -22,8 +22,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Teacher Side
-Route::resource('teachersubject',App\Http\Controllers\TeacherSubjectController::class);
-
+Route::group(['middleware' => 'CheckRole:teacher'],function(){
+    Route::resource('teachersubject',App\Http\Controllers\TeacherSubjectController::class);
+});
 
 // Student Side
-Route::post('/studentsubject',[App\Http\Controllers\StudentSubjectController::class,'join'])->name('studentsubject.join');;
+Route::group(['middleware' => 'CheckRole:student'],function(){
+    Route::post('/studentsubject',[App\Http\Controllers\StudentSubjectController::class,'join'])->name('studentsubject.join');
+    // Route::get('/studentsubject',[App\Http\Controllers\StudentSubjectController::class,'index'])->name('studentsubject.index');
+});
