@@ -9,7 +9,7 @@
                 <div class="col-md-12">
                     <h4>{{$subject->name}}</h4>
                     <div class="text-center bg-success">
-                        <a href="/create-quiz" type="button" class="text-light btn">+ Create</a>
+                        <a href="{{ route('teacherquiz.create',$subject->id )}}" type="button" class="text-light btn">+ Create</a>
                     </div>
                     <div class="col-lg-12 bg-light-green my-4">
                         <div class="dropdown show ">

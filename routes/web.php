@@ -24,6 +24,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 // Teacher Side
 Route::group(['middleware' => 'CheckRole:teacher'],function(){
     Route::resource('teachersubject',App\Http\Controllers\TeacherSubjectController::class);
+    Route::get('teacherquiz/{id}/create',[App\Http\Controllers\TeacherQuizController::class,'create'])->name('teacherquiz.create');
+    Route::post('teacherquiz/{id}/created',[App\Http\Controllers\TeacherQuizController::class,'created'])->name('teacherquiz.created');
 });
 
 // Student Side

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Quiz;
+use App\Models\Subject;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Auth;
 
 class TeacherQuizController extends Controller
@@ -13,9 +15,21 @@ class TeacherQuizController extends Controller
         //
     }
 
-    public function create()
+    public function create($id)
     {
- 
+        $subject = Subject::find($id);
+        if(is_null($subject)) abort(404);
+
+        return view('teacher.quiz.create')->with('subject',$subject);
+    }
+
+    public function created(Request $request,$id){
+        if(!is_null($request->save)){
+            // $request->customRadio;
+            return $request;
+        }else if(!is_null($request->submit)){
+            return $request;
+        }
     }
 
     public function store(Request $request)
