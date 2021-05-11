@@ -24,12 +24,16 @@ class TeacherQuizController extends Controller
     }
 
     public function created(Request $request,$id){
-        if(!is_null($request->save)){
-            // $request->customRadio;
+        if(!is_null($request->submit)){
             return $request;
-        }else if(!is_null($request->submit)){
+        }else if(!is_null($request->save)){
             return $request;
         }
+    }
+    
+    public function draft(Request $request)
+    {
+
     }
 
     public function store(Request $request)

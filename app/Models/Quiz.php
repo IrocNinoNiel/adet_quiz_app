@@ -25,4 +25,12 @@ class Quiz extends Model
         'can_see_answer',
         'can_see_points'
     ];
+
+    public function question(){
+        return $this->hasMany(Question::class);
+    }
+
+    public function subject(){
+        return $this->belongsTo(Subject::class);
+    }
 }
