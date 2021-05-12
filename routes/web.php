@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Redirect;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,7 +26,10 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::group(['middleware' => 'CheckRole:teacher'],function(){
     Route::resource('teachersubject',App\Http\Controllers\TeacherSubjectController::class);
     Route::get('teacherquiz/{id}/create',[App\Http\Controllers\TeacherQuizController::class,'create'])->name('teacherquiz.create');
+   
+    Route::get('teacherquiz/{id}/created',[App\Http\Controllers\TeacherQuizController::class,'createquiz2'])->name('teacherquiz.createquiz2');
     Route::post('teacherquiz/{id}/created',[App\Http\Controllers\TeacherQuizController::class,'created'])->name('teacherquiz.created');
+    Route::post('teacherquiz/{id}/store',[App\Http\Controllers\TeacherQuizController::class,'store'])->name('teacherquiz.store');
 });
 
 // Student Side

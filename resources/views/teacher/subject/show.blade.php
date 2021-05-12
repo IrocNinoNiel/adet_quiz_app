@@ -4,6 +4,7 @@
 
     <div class="container text-left">
         @include('inc.navbar')
+        @include('inc.message')
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="col-md-12">
@@ -32,9 +33,11 @@
                     <h3 class=" pb-2">Ongoing Quizzes</h3>
                     <div class="container">
                         <div class="row">
+                            @foreach ($subject->quiz as $quiz)
                             <div class="col-md-4 my-3">
-                                <button type="button" id="modal-btn" class="btn btn-success text-light pl-5 pr-5">FL-Quiz-4</button>
+                                <button type="button" id="modal-btn" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</button>
                             </div> 
+                            @endforeach
                         </div>
                     </div>
                     <h3 class="py-2">Closed Quizzes</h3>
