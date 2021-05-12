@@ -24,4 +24,8 @@ class Subject extends Model
     public function quiz(){
         return $this->hasMany(Quiz::class);
     }
+
+    public function drafts(){
+        return $this->hasMany(DraftQuiz::class);
+    }
 }

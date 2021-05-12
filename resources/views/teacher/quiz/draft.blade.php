@@ -65,7 +65,7 @@
                                         <div id="container-form">
                                             <div class="question-box container bg-white p-3 my-3 border border-secondary rounded" id="questionBox">    
                                                 <label for="question" class="form-label">Question: </label>
-                                                <input type="text" name="question[]" placeholder="Enter Question" class="form-control" />
+                                                <input type="text" name="question[]" placeholder="Enter Question" class="form-control"/>
                                                 
                                                 <div class="form-group row m-3" id="containerPoints">
                                                     <label for="points" class="col-sm-1 col-form-label">Points:</label>
@@ -131,79 +131,5 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.js"></script>  
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
     <script src="{{ asset('js/createquiz.js') }}" defer></script>
-    <script>
-        $("#create").click(function(e) {
-            e.preventDefault();
-            const id = this.getAttribute('data-id');
-            var url = "/teacherquiz/"+id+"/created";
-
-            $.ajaxSetup({
-                headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-            });
-
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: $("#quiz-form").serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    // console.log(data.success); // show response from the php script.
-
-                    if(!data.success){
-                       let output = ``;
-                       data.msg.forEach(e =>  output += `<div class="alert alert-warning alert-dismissible fade show m-1" role="alert">
-                                ${e}
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>`);
-                       
-                        document.getElementById('message').innerHTML = output;
-                        alert('Something is Wrong');
-                        window.location.href = '#';
-                    }else{
-                        window.location.href = '/teacherquiz/'+id+'/created';
-                    }
-                },
-                error:function(error){
-                        console.log(error)
-                        alert("Server Error");
-                }
-            });
-        });
-
-        $("#save").click(function(e) {
-            e.preventDefault();
-
-            const id = this.getAttribute('data-id');
-            var url = "/teacherquiz/"+id+"/save";
-
-            $.ajaxSetup({
-                headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-            });
-
-
-            $.ajax({
-                type: "POST",
-                url: url,
-                data: $("#quiz-form").serialize(), // serializes the form's elements.
-                success: function(data)
-                {
-                    if(data.success){
-                        alert('Draft Saved');
-                        window.location.href = '/teachersubject/'+id;
-                    }
-                },
-                error:function(error){
-                        console.log(error)
-                        alert("Server Error");
-                }
-            });
-        });
-    </script>
+    
 @endsection

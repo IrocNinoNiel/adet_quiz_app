@@ -6,7 +6,10 @@ use App\Models\Quiz;
 use App\Models\Answer;
 use App\Models\Subject;
 use App\Models\Question;
+use App\Models\DraftQuiz;
+use App\Models\DraftAnswer;
 use Illuminate\Http\Request;
+use App\Models\DraftQuestion;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -91,9 +94,66 @@ class TeacherQuizController extends Controller
         return view('teacher.quiz.created')->with('subject',$subject);
     }
     
-    public function draft(Request $request)
+    public function draft(Request $request,$id)
     {
+        if(request()->ajax()){
 
+            $title = $request->input('quizTitle')?? 'no title';
+            $description = $request->input('quizDescription');
+            $questionArray = $request->input('question');
+            $answerArray = array_chunk($request->input('option'),4);
+            $correctArray = array_chunk($request->input('ischeck'),4);
+            $pointsArray = $request->quizPts;
+            $remarkOption= $request->customRadio;
+            $answerOption= $request->checkboxQuiz1 ?? 0;
+            $pointsOption = $request->checkboxQuiz2 ?? 0;
+
+            $draftquiz = new DraftQuiz;
+
+            $draftquiz->title = $title;
+            $draftquiz->description = $description;
+            $draftquiz->status = 1;
+            $draftquiz->subject_id = $id;
+            $draftquiz->when_release_remark = $remarkOption;
+            $draftquiz->can_see_answer = $answerOption;
+            $draftquiz->can_see_points = $pointsOption;
+
+            $draftquiz->save();
+
+            for($i = 0; $i<count($questionArray); $i++){
+
+                $draftquestion = new DraftQuestion;
+                $draftquestion->description = $questionArray[$i];
+                $draftquestion->draft_quiz_id = $draftquiz->id;
+                $draftquestion->type = null;
+                $draftquestion->points = $pointsArray[$i];
+                $draftquestion->status = 1;
+    
+                $draftquestion->save();
+    
+                for($x = 0; $x<4; $x++){
+                    $draftans = new DraftAnswer;
+                    $draftans->description = $answerArray[$i][$x];
+                    $draftans->draft_question_id = $draftquestion->id;
+                    $draftans->is_right = $correctArray[$i][$x];
+                    $draftans->status = 1;
+    
+                    $draftans->save();
+                }
+                
+            }
+            return response()->json(['success'=>true]);  
+        }
+    }
+
+    public function draftpage(Request $request,$subid,$id)
+    {
+        $draft = DraftQuiz::find($id);
+        $subject = Subject::find($subid);
+
+        if(is_null($draft) || is_null($subject)) return abort(404);
+
+        return view('teacher.quiz.draft')->with('draft',$draft)->with('subject',$subject);
     }
 
     public function store(Request $request)

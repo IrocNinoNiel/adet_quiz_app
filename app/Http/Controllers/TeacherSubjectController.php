@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DraftQuiz;
 use App\Models\Subject;
 use Illuminate\Http\Request;
 use App\Models\SubjectMember;

@@ -18,9 +18,11 @@
                               Drafts
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-                              <a class="dropdown-item" href="#">Quiz-2</a>
-                              <a class="dropdown-item" href="#">Quiz-4</a>
-                              <a class="dropdown-item" href="#">Semi-Final</a>
+                                @if (count($subject->drafts) > 0)
+                                    @foreach ($subject->drafts as $draft)
+                                        <a class="dropdown-item" href="{{ route('teacherquiz.draftpage',['subid'=>$subject->id,'id'=>$draft->id] )}}">{{$draft->title ?? 'no title'}} </a>
+                                    @endforeach 
+                                @endif
                             </div>
                         </div>
                     </div> 
@@ -52,5 +54,4 @@
             </div>
         </div>
     </div>
-    
 @endsection
