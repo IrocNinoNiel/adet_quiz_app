@@ -41,20 +41,26 @@
                     <div class="container">
                         <div class="row">
                             @foreach ($subject->quiz as $quiz)
-                            <div class="col-md-4 my-3">
-                                <a href="{{route('teacherquiz.show',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</a>
-                            </div> 
+                                @if(date('Y-m-d H:i:s') < $quiz->end_date)
+                                    <div class="col-md-4 my-3">
+                                        <a href="{{route('teacherquiz.show',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</a>
+                                    </div> 
+                                @endif
                             @endforeach
                         </div>
                     </div>
                     <h3 class="py-2">Closed Quizzes</h3>
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-md-4 my-3">
-                                    <button type="button" class="btn btn-success text-light pl-5 pr-5">FL-Quiz-4</button>
-                                </div>
-                            </div>
+                    <div class="container">
+                        <div class="row">
+                            @foreach ($subject->quiz as $quiz)
+                                @if(date('Y-m-d H:i:s') > $quiz->end_date)
+                                    <div class="col-md-4 my-3">
+                                        <a href="{{route('teacherquiz.show',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</a>
+                                    </div> 
+                                @endif
+                            @endforeach
                         </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -45,4 +45,8 @@ Route::group(['middleware' => 'CheckRole:teacher'],function(){
 Route::group(['middleware' => 'CheckRole:student'],function(){
     Route::post('/studentsubject',[App\Http\Controllers\StudentSubjectController::class,'join'])->name('studentsubject.join');
     Route::get('/studentsubject/{id}',[App\Http\Controllers\StudentSubjectController::class,'show'])->name('studentsubject.show');
+
+    // student quiz routes
+    Route::get('/studentquiz/{subid}/attempt/{quizid}',[App\Http\Controllers\StudentQuizController::class,'index'])->name('studentquiz.index');
+    
 });

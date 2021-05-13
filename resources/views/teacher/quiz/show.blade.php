@@ -17,7 +17,11 @@
             <div class="col-md-9 border-left">
                 
                 <div class="container-fluid">
-                    <h2>Closed Quizzes > {{$quiz->title}}</h2>
+                    <h2>@if (date('Y-m-d H:i:s') < $quiz->end_date)
+                        OPEN
+                    @else
+                        CLOSE
+                    @endif > {{$quiz->title}}</h2>
                     <hr/>
                     <br/>
 
