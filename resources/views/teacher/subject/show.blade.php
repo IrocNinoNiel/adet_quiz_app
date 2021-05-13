@@ -9,6 +9,9 @@
             <div class="col-md-3">
                 <div class="col-md-12">
                     <h4>{{$subject->name}}</h4>
+                    <div class="container mt-3 mb-3">
+                        <h2>{{$subject->code}}</h2>
+                    </div>
                     <div class="text-center bg-success">
                         <a href="{{ route('teacherquiz.create',$subject->id )}}" type="button" class="text-light btn">+ Create</a>
                     </div>
@@ -39,7 +42,7 @@
                         <div class="row">
                             @foreach ($subject->quiz as $quiz)
                             <div class="col-md-4 my-3">
-                                <button type="button" id="modal-btn" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</button>
+                                <a href="{{route('teacherquiz.show',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</a>
                             </div> 
                             @endforeach
                         </div>

@@ -24,18 +24,21 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 // Teacher Side
 Route::group(['middleware' => 'CheckRole:teacher'],function(){
+    // Subject Routes
     Route::resource('teachersubject',App\Http\Controllers\TeacherSubjectController::class);
+
+    // Quiz Routes
     Route::get('teacherquiz/{id}/create',[App\Http\Controllers\TeacherQuizController::class,'create'])->name('teacherquiz.create');
    
     Route::get('teacherquiz/{id}/created',[App\Http\Controllers\TeacherQuizController::class,'createquiz2'])->name('teacherquiz.createquiz2');
     Route::post('teacherquiz/{id}/created',[App\Http\Controllers\TeacherQuizController::class,'created'])->name('teacherquiz.created');
-
     Route::post('teacherquiz/{id}/save',[App\Http\Controllers\TeacherQuizController::class,'draft'])->name('teacherquiz.draft');
     Route::get('teacherquiz/{subid}/draft/{id}',[App\Http\Controllers\TeacherQuizController::class,'draftpage'])->name('teacherquiz.draftpage');
-    Route::post('teacherquiz/{subid}/draft/{id}',[App\Http\Controllers\TeacherQuizController::class,'draftedit'])->name('teacherquiz.draftedit');
-
-
+    Route::post('teacherquiz/{subid}/draft/{id}',[App\Http\Controllers\TeacherQuizController::class,'draftedit'])->name('teacherquiz.draftedit');    
     Route::post('teacherquiz/{id}/store',[App\Http\Controllers\TeacherQuizController::class,'store'])->name('teacherquiz.store');
+    
+    Route::get('teacherquiz/{subid}/show/{quizid}',[App\Http\Controllers\TeacherQuizController::class,'show'])->name('teacherquiz.show');
+    
 });
 
 // Student Side
