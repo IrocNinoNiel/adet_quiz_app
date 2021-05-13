@@ -32,6 +32,8 @@ Route::group(['middleware' => 'CheckRole:teacher'],function(){
 
     Route::post('teacherquiz/{id}/save',[App\Http\Controllers\TeacherQuizController::class,'draft'])->name('teacherquiz.draft');
     Route::get('teacherquiz/{subid}/draft/{id}',[App\Http\Controllers\TeacherQuizController::class,'draftpage'])->name('teacherquiz.draftpage');
+    Route::post('teacherquiz/{subid}/draft/{id}',[App\Http\Controllers\TeacherQuizController::class,'draftedit'])->name('teacherquiz.draftedit');
+
 
     Route::post('teacherquiz/{id}/store',[App\Http\Controllers\TeacherQuizController::class,'store'])->name('teacherquiz.store');
 });

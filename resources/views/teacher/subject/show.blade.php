@@ -20,7 +20,9 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
                                 @if (count($subject->drafts) > 0)
                                     @foreach ($subject->drafts as $draft)
-                                        <a class="dropdown-item" href="{{ route('teacherquiz.draftpage',['subid'=>$subject->id,'id'=>$draft->id] )}}">{{$draft->title ?? 'no title'}} </a>
+                                        @if($draft->status == 1)
+                                            <a class="dropdown-item" href="{{ route('teacherquiz.draftpage',['subid'=>$subject->id,'id'=>$draft->id] )}}">{{$draft->title ?? 'no title'}} </a>
+                                        @endif
                                     @endforeach 
                                 @endif
                             </div>

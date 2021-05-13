@@ -165,6 +165,7 @@
                         alert('Something is Wrong');
                         window.location.href = '#';
                     }else{
+                       
                         window.location.href = '/teacherquiz/'+id+'/created';
                     }
                 },

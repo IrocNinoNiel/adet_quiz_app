@@ -76,13 +76,14 @@ class TeacherQuizController extends Controller
                 'quizPts'=>$request->quizPts,
                 'isCheck'=>$request->ischeck,
                 'option'=>$request->option,
+                'draftid'=>$request->draftid ?? null
             );
 
             $subject = Subject::find($id);
             if(is_null($subject)) abort(404);
             session(['array' => $array]);
 
-            return response()->json(['msg'=>$array, 'success'=>true]);  
+            return response()->json(['msg'=>$request->all(), 'success'=>true]);  
 
         }
     }
@@ -156,6 +157,61 @@ class TeacherQuizController extends Controller
         return view('teacher.quiz.draft')->with('draft',$draft)->with('subject',$subject);
     }
 
+    public function draftedit(Request $request,$subid,$id)
+    {
+        if(request()->ajax()){
+
+            $title = $request->input('quizTitle')?? 'no title';
+            $description = $request->input('quizDescription');
+            $questionArray = $request->input('question');
+            $answerArray = array_chunk($request->input('option'),4);
+            $correctArray = array_chunk($request->input('ischeck'),4);
+            $pointsArray = $request->quizPts;
+            $remarkOption= $request->customRadio;
+            $answerOption= $request->checkboxQuiz1 ?? 0;
+            $pointsOption = $request->checkboxQuiz2 ?? 0;
+
+            $draftquiz = DraftQuiz::find($id);
+
+            $draftquiz->title = $title;
+            $draftquiz->description = $description;
+            $draftquiz->status = 1;
+            $draftquiz->subject_id = $subid;
+            $draftquiz->when_release_remark = $remarkOption;
+            $draftquiz->can_see_answer = $answerOption;
+            $draftquiz->can_see_points = $pointsOption;
+
+            $draftquiz->save();
+            
+            $questions = DraftQuestion::where('draft_quiz_id','=',$id)->get();
+            DraftQuestion::destroy($questions->toArray());
+
+            for($i = 0; $i<count($questionArray); $i++){
+
+                $draftquestion = new DraftQuestion;
+                $draftquestion->description = $questionArray[$i];
+                $draftquestion->draft_quiz_id = $draftquiz->id;
+                $draftquestion->type = null;
+                $draftquestion->points = $pointsArray[$i];
+                $draftquestion->status = 1;
+    
+                $draftquestion->save();
+    
+                for($x = 0; $x<4; $x++){
+                    $draftans = new DraftAnswer;
+                    $draftans->description = $answerArray[$i][$x];
+                    $draftans->draft_question_id = $draftquestion->id;
+                    $draftans->is_right = $correctArray[$i][$x];
+                    $draftans->status = 1;
+    
+                    $draftans->save();
+                }
+                
+            }
+            return response()->json(['success'=>true]);
+        };
+    }
+
     public function store(Request $request)
     {
 
@@ -208,6 +264,15 @@ class TeacherQuizController extends Controller
             }
 
             return $randomString;
+        }
+
+        $draftid = $value['draftid'];
+
+        if(!is_null($draftid)){
+            $draft = DraftQuiz::find($draftid);
+
+            $draft->status = 0;
+            $draft->save();
         }
 
         $quizCode = generateRandomString(6);
