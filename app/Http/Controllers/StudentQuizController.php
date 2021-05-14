@@ -16,4 +16,12 @@ class StudentQuizController extends Controller
 
         return view('student.quiz.attempt')->with('subject',$subject)->with('quiz',$quiz);
     }
+
+    public function answer($subid,$quizid)
+    {
+        $subject = Subject::find($subid);
+        $quiz = Quiz::find($quizid);
+
+        return view('student.quiz.answer')->with('subject',$subject)->with('quiz',$quiz);
+    }
 }

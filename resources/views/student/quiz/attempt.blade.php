@@ -25,11 +25,9 @@
                             <p><span class="font-weight-bold">Due Date: </span>{{\Carbon\Carbon::parse($quiz->end_date)->format('M d, Y, D, h:m')}}</p>
                         </div>
                         
-                        <form action="/answerquiz">
-                            <div class="container my-3 text-center">
-                                <button type="submit" class="btn btn-success">Answer Quiz</button>   
-                            </div >
-                        </form>
+                        <div class="container text-center mb-4">
+                            <a href="{{route('studentquiz.answer',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" type="button" class="btn btn-primary">Attempt Quiz</a>
+                        </div>
                         
                         <div class="container text-center">
                             <a href="{{route('studentsubject.show',$subject->id)}}" type="button" class="btn btn-warning">Cancel</a>

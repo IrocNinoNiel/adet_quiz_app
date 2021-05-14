@@ -19,6 +19,7 @@ class CreateStudentAnswersTable extends Migration
             $table->foreignId('quiz_id')->constrained()->onDelete('cascade');
             $table->foreignId('question_id')->constrained()->onDelete('cascade');
             $table->foreignId('answer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('student_attempt_id')->constrained()->onDelete('cascade');
             $table->integer('points');
             $table->integer('status');
             $table->timestamps();
