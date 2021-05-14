@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Quiz extends Model
 {
@@ -32,5 +33,9 @@ class Quiz extends Model
 
     public function subject(){
         return $this->belongsTo(Subject::class);
+    }
+
+    public function attempt(){
+        return $this->hasMany(StudentAttempt::class)->where('user_id','=',Auth::user()->id);
     }
 }

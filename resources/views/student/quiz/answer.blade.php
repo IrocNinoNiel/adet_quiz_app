@@ -14,16 +14,17 @@
                         </div>
                     </div>
                 </div>
-                
             </div>
             <div class="col-md-9 border-left">
                 <div class="container-scroll" id="style-1">
                     <div class="container-fluid">
                         <h1>{{$quiz->title}}</h1>
-                        <form action="">
+                        <form action="{{ route('studentquiz.submit',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" method="POST">
+                            @csrf
                             @foreach ($quiz->question as $question)
                                 <div class="container p-3 ml-4">   
                                     <ul class="list-inline">
+                                            <input type="hidden" name="question[]" value={{$question->id}}>
                                             <li class="list-inline-item">{{$loop->iteration}}. {{$question->description}}?</li>
                                             <li class="list-inline-item text-secondary ml-8">{{$question->points}} points</li>
                                     </ul>
@@ -32,7 +33,7 @@
                                             <div class="custom-control custom-radio">
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
-                                                    <input type="radio" name="radioAnswer[{{$loop->parent->iteration}}]">  
+                                                    <input type="radio" name="answer[{{$loop->parent->iteration}}]" value={{$answer->id}} required>  
                                                     </div>
                                                     <p class="ml-3">{{$answer->description}}</p>
                                                 </div> 
@@ -85,6 +86,5 @@
                     countDiv.innerHTML = 'countdown done';
                 }
             }
-
     </script>
 @endsection

@@ -69,14 +69,6 @@ class TeacherSubjectController extends Controller
         $subject->save();
 
         return redirect('/home');
-
-        // protected $fillable = [
-        //     'name',
-        //     'description',
-        //     'user_id',
-        //     'code',
-        //     'status'
-        // ];
     }
 
     public function show($id)
