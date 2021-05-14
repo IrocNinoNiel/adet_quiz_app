@@ -9,9 +9,8 @@
                     <h3>Foreign Language</h3>
                     <div class="container m-3 text-center">
                         <div class="container-fluid bg-dark-green text-light my-4"><h4 class="">Quiz-FL-4</h4></div>
-                        <h6 class="">Submitted on: 08/04/21, 7:00 am</h6>
-                        <h6 class="">Time Taken: 17 minutes</h6>
-                       
+                        <h6 class="">Submitted on: {{$finish->created_at}}</h6>
+                        <h6 class="">Time Taken: {{$finish->created_at->diffForHumans($attempt->created_at,true)}}</h6>
                     </div>
                 </div>
                 
@@ -23,33 +22,33 @@
                         <div class="container p-3 ml-4">
                             <div class="bg-light-green p-2">
                                 <h3 class="font-weight-bold">FL_QUIZ_4</h3>
-                                <h3>Total Score: 30/30</h3>
+                                <h3>Total Score: {{$arrTotal->sum('points')}}/{{$quiz->total->sum('points')}}</h3>
                             </div>   
-                            <ul class="list-inline">
-                                    <li class="list-inline-item">1. Question?</li>
-                                    <li class="list-inline-item text-secondary ml-8">2/2</li>
-                            </ul>
 
-                            <div class="container">
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio1" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadio1">Option 1</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadio2">Option 2</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio3" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadio3">Option 3</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="customRadio4" name="customRadio" class="custom-control-input">
-                                    <label class="custom-control-label" for="customRadio4">Option 4</label>
-                                </div> 
-                            </div>   
-                        </div>
-                        
+                            @if ($quiz->can_see_answer == 1)
+                                @foreach ($quiz->question as $question)
+                                    <ul class="list-inline">
+                                        <li class="list-inline-item">{{$loop->iteration}}. {{$question->description}}?</li>
+                                        <li class="list-inline-item text-secondary ml-8">{{$arrAnswer[$loop->index]['points']}}/{{$question->points}}</li>
+                                    </ul>
+                                    <div class="container">
+                                        @foreach ($question->answer as $answer)
+                                            <div class="custom-control custom-radio">
+                                                <input type="radio" id="customRadio{{$answer->id}}" name="customRadio" class="custom-control-input">
+                                                @if($arrAnswer[$loop->parent->index]['answer_id'] == $answer->id) 
+                                                    <label class="custom-control-label @if($answer->is_right == 1) bg-success @else bg-danger @endif" for="customRadio1{{$answer->id}}">{{$answer->description}}</label>
+                                                
+                                                @else
+                                                    <label class="custom-control-label " for="customRadio1{{$answer->id}}">{{$answer->description}}</label>    
+                                                @endif
+                                                
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endforeach
+                            @endif
+
+        
                         <div class="container text-center">
                             <a href="{{route('studentsubject.show',$subject->id)}}" type="button" class="btn btn-warning">Done</a>
                         </div>

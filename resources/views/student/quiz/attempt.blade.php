@@ -25,11 +25,11 @@
                         <p><span class="font-weight-bold">Due Date: </span>{{\Carbon\Carbon::parse($quiz->end_date)->format('M d, Y, D, h:m')}}</p>
                     </div>  
 
-                    <div class="container text-center mb-4">
+                    {{-- <div class="container text-center mb-4">
                         <a href="{{route('studentquiz.answer',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" type="button" class="btn btn-primary">Attempt Quiz</a>
-                    </div>
+                    </div> --}}
 
-                    {{-- @if(count($quiz->attempt) < $quiz->num_of_attempt)
+                    @if(count($quiz->attempt) < $quiz->num_of_attempt)
                         <div class="container text-center mb-4">
                             <a href="{{route('studentquiz.answer',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" type="button" class="btn btn-primary">Attempt Quiz</a>
                         </div>
@@ -37,7 +37,7 @@
                     <div class="container text-center mb-4">
                         <button class="btn btn-danger" disabled>Attempt is Over</button>
                     </div>
-                    @endif --}}
+                    @endif
 
                     <div class="container text-center">
                         <a href="{{route('studentsubject.show',$subject->id)}}" type="button" class="btn btn-warning">Cancel</a>

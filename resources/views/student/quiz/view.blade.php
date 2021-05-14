@@ -20,12 +20,12 @@
                     <h1>{{$quiz->title}}</h1>
                         <div class="w-50 mx-auto">
                             <p><span class="font-weight-bold">Submitted: </span>{{$attempt->created_at}}</p>
-                            <p><span class="font-weight-bold">Time Taken: </span> 17 minutes</p>
+                            <p><span class="font-weight-bold">Time Taken: </span>{{$finish->created_at->diffForHumans($attempt->created_at,true)}}</p>
                             
                         </div>
                         
                         <div class="container text-center mb-3 mt-5">
-                            @if ($quiz->can_see_answer == 1)
+                            @if ($quiz->can_see_points == 1)
                                 <a href="{{ route('studentquiz.score',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" type="button" class="btn btn-success">View Score</a>
                             @endif
                         </div>

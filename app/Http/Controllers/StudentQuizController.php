@@ -8,6 +8,7 @@ use App\Models\Subject;
 use App\Models\Question;
 use Illuminate\Http\Request;
 use App\Models\StudentAnswer;
+use App\Models\FinishQuizTime;
 use App\Models\StudentAttempt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
@@ -45,6 +46,11 @@ class StudentQuizController extends Controller
     {
         $attempId = session('attemptid');
 
+        $finish = new FinishQuizTime();
+        
+        $finish->student_attempt_id = $attempId;
+        $finish->save();
+
         foreach($request->question as $index=>$question){
 
             $studentAnswer = new StudentAnswer();
@@ -67,30 +73,47 @@ class StudentQuizController extends Controller
 
             $studentAnswer->save();
         }
-        
+        $array = array(
+            'attemptid'=> $attempId,
+            'finish'=>$finish,
+        );
+
+        session(['array' => $array]);
 
         return Redirect::route('studentquiz.finish',['subid'=>$subid,'quizid'=>$quizid]);
     }
 
     public function finish($subid,$quizid){
 
-        $attempId = session('attemptid');
+        $value = session('array');
+        $attempId = $value['attemptid'];
+        $finish = $value['finish'];
 
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
         $attempt = StudentAttempt::find($attempId);
-        // return $attempt;
 
-        return view('student.quiz.view')->with('subject',$subject)->with('quiz',$quiz)->with('attempt',$attempt);
+        return view('student.quiz.view')->with('subject',$subject)->with('quiz',$quiz)->with('attempt',$attempt)->with('finish',$finish);
     }
 
     public function score($subid,$quizid)
     {
+        $value = session('array');
+        $attempId = $value['attemptid'];
+        $finish = $value['finish'];
        
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
+        $attempt = StudentAttempt::find($attempId);
+        $studentAnswer = StudentAnswer::where('user_id','=',Auth::user()->id)->where('student_attempt_id','=',$attempId)->get();
+
+        $arrAnswer = array();
+
+        foreach($studentAnswer as $ans){
+            array_push($arrAnswer,['points'=>$ans->points,'answer_id'=>$ans->answer_id]);
+        }
        
-        return view('student.quiz.score')->with('subject',$subject)->with('quiz',$quiz);
+        return view('student.quiz.score')->with('subject',$subject)->with('quiz',$quiz)->with('attempt',$attempt)->with('finish',$finish)->with('arrAnswer',$arrAnswer)->with('arrTotal',$studentAnswer);
     }
 
 

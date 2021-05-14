@@ -7,13 +7,13 @@
         <div id="message">
 
         </div>
-
         <div class="row mt-3">
             <div class="col-md-3">
                 <div class="col-md-12">
                     <h3>{{$quiz->subject->name}}</h3>
                 </div>
             </div>
+        
             <div class="col-md-9 border-left">
                 
                 <div class="container-fluid">
@@ -67,10 +67,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td colspan="2">Mark</td>
-                                    <td>15</td>
-                                </tr>
+                                @foreach ($studentInfo as $item)
+                                    <tr>
+                                        <td colspan="2">{{$item->studentInfo()[0]->name}}</td>
+                                        <td>{{$item->score($item->user_id,$item->id)->count('points')}}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

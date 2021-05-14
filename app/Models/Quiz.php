@@ -38,4 +38,8 @@ class Quiz extends Model
     public function attempt(){
         return $this->hasMany(StudentAttempt::class)->where('user_id','=',Auth::user()->id);
     }
+
+    public function total(){
+        return $this->hasMany(Question::class);
+    }
 }

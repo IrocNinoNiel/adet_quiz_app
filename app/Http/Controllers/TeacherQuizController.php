@@ -10,6 +10,8 @@ use App\Models\DraftQuiz;
 use App\Models\DraftAnswer;
 use Illuminate\Http\Request;
 use App\Models\DraftQuestion;
+use App\Models\StudentAnswer;
+use App\Models\StudentAttempt;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -292,8 +294,6 @@ class TeacherQuizController extends Controller
         $points = $value['checkboxQuiz2'];
         $subjectId = $request->subject;
 
-        // return $correctArray;
-
         $quiz = new Quiz;
 
         $quiz->title = $title;
@@ -345,8 +345,9 @@ class TeacherQuizController extends Controller
     {
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
+        $studentInfo = StudentAttempt::where('quiz_id','=',$quizid)->get();
 
-        return view('teacher.quiz.show')->with('subjet',$subject)->with('quiz',$quiz);
+        return view('teacher.quiz.show')->with('subject',$subject)->with('quiz',$quiz)->with('studentInfo',$studentInfo);
        
     }
 
