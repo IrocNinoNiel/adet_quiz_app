@@ -21,7 +21,7 @@
                         <p><span class="font-weight-bold">Note: </span> {{$quiz->note}}</p>
                         <p><span class="font-weight-bold">Time Limit: </span> {{floor($quiz->time_limit/60)}} Hours {{$quiz->time_limit%60}} minutes</p>
                         <p><span class="font-weight-bold">Items: </span> {{count($quiz->question)}}</p>
-                        <p><span class="font-weight-bold">Attempts Allowed: </span> {{$quiz->num_of_attempt}}</p>
+                        <p><span class="font-weight-bold">Attempts Allowed: </span> @if($quiz->num_of_attempt - count($quiz->attempt)<= 0) 0  @else {{$quiz->num_of_attempt - count($quiz->attempt)}}  @endif Attempts remaining</p>
                         <p><span class="font-weight-bold">Due Date: </span>{{\Carbon\Carbon::parse($quiz->end_date)->format('M d, Y, D, h:m')}}</p>
                     </div>  
 

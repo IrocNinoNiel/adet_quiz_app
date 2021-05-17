@@ -345,7 +345,7 @@ class TeacherQuizController extends Controller
     {
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
-        $studentInfo = StudentAttempt::where('quiz_id','=',$quizid)->get();
+        $studentInfo = StudentAttempt::where('quiz_id','=',$quizid)->where('status','=',1)->get();
 
         return view('teacher.quiz.show')->with('subject',$subject)->with('quiz',$quiz)->with('studentInfo',$studentInfo);
        

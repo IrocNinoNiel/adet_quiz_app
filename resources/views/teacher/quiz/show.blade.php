@@ -63,14 +63,14 @@
                             <thead class="thead bg-success">
                                 <tr>
                                     <th scope="col" colspan="2">Name</th>
-                                    <th scope="col">Score(15)</th>
+                                    <th scope="col">Score</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($studentInfo as $item)
                                     <tr>
                                         <td colspan="2">{{$item->studentInfo()[0]->name}}</td>
-                                        <td>{{$item->score($item->user_id,$item->id)->count('points')}}</td>
+                                        <td>{{$item->score($item->user_id,$item->id)->sum('points')}}</td>
                                     </tr>
                                 @endforeach
                             </tbody>

@@ -28,6 +28,14 @@ class StudentQuizController extends Controller
     {
         $attempt = new StudentAttempt();
 
+
+        $findAttempt = StudentAttempt::where('user_id','=',Auth::user()->id)->where('quiz_id','=',$quizid)->where('status','=',1)->get();
+
+        if(count($findAttempt) > 0){
+            $findAttempt[0]->status = 0;
+            $findAttempt[0]->save();
+        }
+
         $attempt->quiz_id = $quizid;
         $attempt->user_id = Auth::user()->id;
         $attempt->status = 1;
@@ -44,6 +52,7 @@ class StudentQuizController extends Controller
 
     public function submit(Request $request, $subid,$quizid)
     {
+        
         $attempId = session('attemptid');
 
         $finish = new FinishQuizTime();
@@ -53,25 +62,60 @@ class StudentQuizController extends Controller
 
         foreach($request->question as $index=>$question){
 
-            $studentAnswer = new StudentAnswer();
+            if($request->answer){
 
-            $answer = Answer::find($request->answer[$index+1]);
-            $question1 = Question::find($question);
-            $points = 0;
+                if(array_key_exists($index+1, $request->answer)){
+                    $studentAnswer = new StudentAnswer();
 
-            if($answer->is_right == 1){
-                $points = $question1->points;
-            }  
-        
-            $studentAnswer->user_id = Auth::user()->id;
-            $studentAnswer->quiz_id =  $quizid;
-            $studentAnswer->question_id = $question1->id;
-            $studentAnswer->answer_id = $answer->id;
-            $studentAnswer->student_attempt_id = $attempId;
-            $studentAnswer->points = $points;
-            $studentAnswer->status = 1;
+                    $answer = Answer::find($request->answer[$index+1]);
+                    $question1 = Question::find($question);
+                    $points = 0;
 
-            $studentAnswer->save();
+                    if($answer->is_right == 1){
+                        $points = $question1->points;
+                    }  
+                
+                    $studentAnswer->user_id = Auth::user()->id;
+                    $studentAnswer->quiz_id =  $quizid;
+                    $studentAnswer->question_id = $question1->id;
+                    $studentAnswer->answer_id = $answer->id;
+                    $studentAnswer->student_attempt_id = $attempId;
+                    $studentAnswer->points = $points;
+                    $studentAnswer->status = 1;
+
+                    $studentAnswer->save();  
+                }else{
+                    $studentAnswer = new StudentAnswer();
+                    $question1 = Question::find($question);
+                    
+                    $studentAnswer->user_id = Auth::user()->id;
+                    $studentAnswer->quiz_id =  $quizid;
+                    $studentAnswer->question_id = $question1->id;
+                    $studentAnswer->answer_id = null;
+                    $studentAnswer->student_attempt_id = $attempId;
+                    $studentAnswer->points = 0;
+                    $studentAnswer->status = 1;
+
+                    $studentAnswer->save();
+                }
+                
+                
+            }else{
+
+                $studentAnswer = new StudentAnswer();
+                $question1 = Question::find($question);
+                    
+                $studentAnswer->user_id = Auth::user()->id;
+                $studentAnswer->quiz_id =  $quizid;
+                $studentAnswer->question_id = $question1->id;
+                $studentAnswer->answer_id = null;
+                $studentAnswer->student_attempt_id = $attempId;
+                $studentAnswer->points = 0;
+                $studentAnswer->status = 1;
+
+                $studentAnswer->save();
+            }
+            
         }
         $array = array(
             'attemptid'=> $attempId,
