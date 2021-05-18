@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="col-md-12">
-                    <h3>Foreign Language</h3>
+                    <a href="{{ route('studentsubject.show',$subject->id)}}" class="btn"><h3>{{$subject->name}}</h3></a>
                     <div class="container m-3 text-center">
                         <div class="container-fluid bg-dark-green text-light my-4"><h4 class="">Quiz-FL-4</h4></div>
                         <h6 class="">Submitted on: {{$finish->created_at}}</h6>

@@ -10,10 +10,10 @@
         <div class="row mt-3">
             <div class="col-md-3">
                 <div class="col-md-12">
-                    <h3>{{$quiz->subject->name}}</h3>
+                    <a href="{{ route('teachersubject.show',$quiz->subject->id)}}" class="btn"><h3>{{$quiz->subject->name}}</h3></a>
                 </div>
             </div>
-        
+           
             <div class="col-md-9 border-left">
                 
                 <div class="container-fluid">

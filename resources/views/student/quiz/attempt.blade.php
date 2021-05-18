@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="col-md-12">
-                    <h3>{{$subject->name}}</h3>
+                    <a href="{{ route('studentsubject.show',$subject->id)}}" class="btn"><h3>{{$subject->name}}</h3></a>
                     <div class="container bg-light-green m-3">
                         <h6 class="text-center">Course Description</h6>
                         <p>{{$subject->description}}</p>

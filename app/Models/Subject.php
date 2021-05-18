@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subject extends Model
 {
@@ -27,5 +28,9 @@ class Subject extends Model
 
     public function drafts(){
         return $this->hasMany(DraftQuiz::class);
+    }
+
+    public function member(){
+        return $this->hasMany(SubjectMember::class)->where('user_id','=',Auth::user()->id)->get();
     }
 }

@@ -7,7 +7,7 @@
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="col-md-12">
-                    <h3 class="text-center">{{$subject->name}}</h3>
+                    <a href="{{ route('studentsubject.show',$subject->id)}}" class="btn"><h3>{{$subject->name}}</h3></a>
                     <div class="container bg-light-green mt-5 card">
                         <h5 class="text-center font-weight-bold m-2">Course Description</h5>
                         <p class="mb-4">{{$subject->description}}</p>

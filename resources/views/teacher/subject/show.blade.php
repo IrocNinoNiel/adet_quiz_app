@@ -8,7 +8,7 @@
         <div class="row mt-5">
             <div class="col-md-3">
                 <div class="col-md-12">
-                    <h4>{{$subject->name}}</h4>
+                    <a href="#" class="btn"><h4>{{$subject->name}}</h4></a>
                     <div class="container mt-3 mb-3">
                         <h2>{{$subject->code}}</h2>
                     </div>

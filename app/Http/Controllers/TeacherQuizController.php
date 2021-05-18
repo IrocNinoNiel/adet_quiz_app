@@ -19,15 +19,17 @@ use Illuminate\Support\Facades\Redirect;
 
 class TeacherQuizController extends Controller
 {
-    public function index()
+    public function __construct()
     {
-        //
+        $this->middleware('auth');
     }
 
     public function create($id)
     {
         $subject = Subject::find($id);
         if(is_null($subject)) abort(404);
+         // Secure Routes
+         if($subject->user_id != Auth::user()->id) abort(401);
 
         return view('teacher.quiz.create')->with('subject',$subject);
     }
@@ -94,6 +96,9 @@ class TeacherQuizController extends Controller
     {
         $subject = Subject::find($id);
         if(is_null($subject)) abort(404);
+        // Secure Routes
+        if($subject->user_id != Auth::user()->id) abort(401);
+
         return view('teacher.quiz.created')->with('subject',$subject);
     }
     
@@ -155,6 +160,8 @@ class TeacherQuizController extends Controller
         $subject = Subject::find($subid);
 
         if(is_null($draft) || is_null($subject)) return abort(404);
+        // Secure Routes
+        if($subject->user_id != Auth::user()->id) abort(401);
 
         return view('teacher.quiz.draft')->with('draft',$draft)->with('subject',$subject);
     }
@@ -345,6 +352,10 @@ class TeacherQuizController extends Controller
     {
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
+        
+        // Secure Routes
+        if($subject->user_id != Auth::user()->id) abort(401);
+
         $studentInfo = StudentAttempt::where('quiz_id','=',$quizid)->where('status','=',1)->get();
 
         return view('teacher.quiz.show')->with('subject',$subject)->with('quiz',$quiz)->with('studentInfo',$studentInfo);

@@ -11,17 +11,10 @@ use Illuminate\Support\Facades\Auth;
 class TeacherSubjectController extends Controller
 {
     
-    public function index()
+    public function __construct()
     {
-        // $subject = SubjectMember::where('user_id','=',Auth::user()->id)
-        //     ->where('status','=',1)
-        //     ->orderBy('created_at','desc')->with(['user'])
-        //     ->get();
-
-        // // return view('student.index')->with('subjects',$subject);
+        $this->middleware('auth');
     }
-
-
     
     public function create()
     {
@@ -75,6 +68,8 @@ class TeacherSubjectController extends Controller
     {
         $subject = Subject::find($id);
         if(is_null($subject)) abort(404);
+        // Secure Routes
+        if($subject->user_id != Auth::user()->id) abort(401);
 
         return view('teacher.subject.show')->with('subject',$subject);
     }
@@ -99,6 +94,8 @@ class TeacherSubjectController extends Controller
             ->get();
 
         if(is_null($subject)) abort(404);
+        // Secure Routes
+        if($subject->user_id != Auth::user()->id) abort(401);
 
         $subject->status = 0;
         $subject->save();

@@ -10,6 +10,11 @@ use Illuminate\Support\Facades\Auth;
 class StudentSubjectController extends Controller
 {
     
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index()
     {
         // $subject = SubjectMember::where('user_id','=',Auth::user()->id)
@@ -61,7 +66,12 @@ class StudentSubjectController extends Controller
 
         $subject = Subject::find($id);
         if(is_null($subject)) abort(404);
-
+        
+        // Check if Student is a Member or not
+        if(count($subject->member()) < 1){
+            return abort(401);
+        }
+    
         return view('student.subject.show')->with('subject',$subject);
     }
 
@@ -74,6 +84,11 @@ class StudentSubjectController extends Controller
             ->get();
 
         if(is_null($subject)) abort(404);
+
+        // Check if Student is a Member or not
+        if(count($subject->member()) < 1){
+            return abort(401);
+        }
 
         $subject->status = 0;
         $subject->save();

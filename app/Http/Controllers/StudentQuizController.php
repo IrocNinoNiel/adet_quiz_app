@@ -15,17 +15,36 @@ use Illuminate\Support\Facades\Redirect;
 
 class StudentQuizController extends Controller
 {
-   
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function index($subid,$quizid)
     {
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
+
+        // Check if Student is a Member or not
+        if(count($subject->member()) < 1){
+            return abort(401);
+        }
 
         return view('student.quiz.attempt')->with('subject',$subject)->with('quiz',$quiz);
     }
 
     public function answer($subid,$quizid)
     {
+
+        $subject = Subject::find($subid);
+        $quiz = Quiz::find($quizid);
+
+        // Check if Student is a Member or not
+        if(count($subject->member()) < 1){
+            return abort(401);
+        }
+
         $attempt = new StudentAttempt();
 
 
@@ -44,15 +63,12 @@ class StudentQuizController extends Controller
 
         session(['attemptid' => $attempt->id]);
 
-        $subject = Subject::find($subid);
-        $quiz = Quiz::find($quizid);
-
         return view('student.quiz.answer')->with('subject',$subject)->with('quiz',$quiz);
     }
 
     public function submit(Request $request, $subid,$quizid)
     {
-        
+    
         $attempId = session('attemptid');
 
         $finish = new FinishQuizTime();
@@ -129,12 +145,17 @@ class StudentQuizController extends Controller
 
     public function finish($subid,$quizid){
 
+        if(is_null(session('array'))){
+            return back()->with('error','You cannot access the page');
+        }
+
         $value = session('array');
+        $subject = Subject::find($subid);
+        $quiz = Quiz::find($quizid);
+
         $attempId = $value['attemptid'];
         $finish = $value['finish'];
 
-        $subject = Subject::find($subid);
-        $quiz = Quiz::find($quizid);
         $attempt = StudentAttempt::find($attempId);
 
         return view('student.quiz.view')->with('subject',$subject)->with('quiz',$quiz)->with('attempt',$attempt)->with('finish',$finish);
@@ -142,10 +163,15 @@ class StudentQuizController extends Controller
 
     public function score($subid,$quizid)
     {
+        
+        if(is_null(session('array'))){
+            return back()->with('error','You cannot access the page');
+        }
+
         $value = session('array');
         $attempId = $value['attemptid'];
         $finish = $value['finish'];
-       
+
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
         $attempt = StudentAttempt::find($attempId);
@@ -156,7 +182,7 @@ class StudentQuizController extends Controller
         foreach($studentAnswer as $ans){
             array_push($arrAnswer,['points'=>$ans->points,'answer_id'=>$ans->answer_id]);
         }
-       
+        
         return view('student.quiz.score')->with('subject',$subject)->with('quiz',$quiz)->with('attempt',$attempt)->with('finish',$finish)->with('arrAnswer',$arrAnswer)->with('arrTotal',$studentAnswer);
     }
 
