@@ -10,7 +10,7 @@
                     <div class="container m-3 text-center">
                         <h6 class="">Time Remaining</h6>
                         <div class="count">
-                            <div id="timer" data-timer="{{$quiz->time_limit}}"></div>
+                            <div id="timer" data-timer="{{\Carbon\Carbon::now()->diffInSeconds($timer)}}" ></div>
                         </div>
                     </div>
                 </div>
@@ -96,8 +96,9 @@
 
 
         const timer = document.getElementById('timer').getAttribute('data-timer');
+        console.log(timer);
         
-        var sec = timer*60,
+        var sec = timer,
             countDiv = document.getElementById("timer"),
             secpass,
             countDown = setInterval(function () {

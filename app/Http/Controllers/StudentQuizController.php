@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
+use Carbon\Carbon;
 use App\Models\Quiz;
 use App\Models\Answer;
 use App\Models\Subject;
@@ -12,6 +14,7 @@ use App\Models\FinishQuizTime;
 use App\Models\StudentAttempt;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Contracts\Session\Session;
 
 class StudentQuizController extends Controller
 {
@@ -34,6 +37,38 @@ class StudentQuizController extends Controller
         return view('student.quiz.attempt')->with('subject',$subject)->with('quiz',$quiz);
     }
 
+    public function attemptDateInfo($subid,$quizid)
+    {   
+        $subject = Subject::find($subid);
+        $quiz = Quiz::find($quizid);
+
+        // Check if Student is a Member or not
+        if(count($subject->member()) < 1){
+            return abort(401);
+        }
+
+        $findAttempt = StudentAttempt::where('user_id','=',Auth::user()->id)->where('quiz_id','=',$quizid)->where('status','=',1)->get();
+
+        if(count($findAttempt) > 0){
+            $findAttempt[0]->status = 0;
+            $findAttempt[0]->save();
+        }
+
+        $attempt = new StudentAttempt();
+
+        $attempt->quiz_id = $quizid;
+        $attempt->user_id = Auth::user()->id;
+        $attempt->status = 1;
+
+        $attempt->save();
+
+        $timer = Carbon::now()->addMinutes($quiz->time_limit);
+
+        session(['attemptid' => $attempt->id,'timer'=>$timer]);
+
+        return Redirect::route('studentquiz.answer',['subid'=>$subid,'quizid'=>$quizid]);
+    }
+
     public function answer($subid,$quizid)
     {
 
@@ -45,25 +80,9 @@ class StudentQuizController extends Controller
             return abort(401);
         }
 
-        $attempt = new StudentAttempt();
+        $timer = session('timer');
 
-
-        $findAttempt = StudentAttempt::where('user_id','=',Auth::user()->id)->where('quiz_id','=',$quizid)->where('status','=',1)->get();
-
-        if(count($findAttempt) > 0){
-            $findAttempt[0]->status = 0;
-            $findAttempt[0]->save();
-        }
-
-        $attempt->quiz_id = $quizid;
-        $attempt->user_id = Auth::user()->id;
-        $attempt->status = 1;
-
-        $attempt->save();
-
-        session(['attemptid' => $attempt->id]);
-
-        return view('student.quiz.answer')->with('subject',$subject)->with('quiz',$quiz);
+        return view('student.quiz.answer')->with('subject',$subject)->with('quiz',$quiz)->with('timer',$timer);
     }
 
     public function submit(Request $request, $subid,$quizid)

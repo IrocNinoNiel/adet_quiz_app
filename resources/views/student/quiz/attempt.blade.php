@@ -31,7 +31,10 @@
 
                     @if(count($quiz->attempt) < $quiz->num_of_attempt)
                         <div class="container text-center mb-4">
-                            <a href="{{route('studentquiz.answer',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" type="button" class="btn btn-primary">Attempt Quiz</a>
+                            <form action="{{route('studentquiz.attemptdateinfo',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" method="post">
+                                @csrf
+                                <button type="submit" class="btn btn-primary">Attempt Quiz</button>
+                            </form>
                         </div>
                     @else
                     <div class="container text-center mb-4">
