@@ -87,6 +87,10 @@
                             </div>
                         </div>
                     </form>
+                    <div class="text-center">
+                        <hr class="my-4">
+                        <h6>Already have an account? <a href="{{ route('login') }}">Log in</a></h6>
+                    </div>
                 </div>
             </div>
         </div>
