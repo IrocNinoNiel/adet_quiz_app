@@ -17,6 +17,7 @@
                 <div class="container-scroll" id="style-1">
                     <h1>{{$quiz->title}}</h1>
                     <div class="w-50 mx-auto">
+                        <p><span class="font-weight-bold">Quiz Description: </span> {{$quiz->description}}</p>
                         <p><span class="font-weight-bold">Note: </span> {{$quiz->note}}</p>
                         <p><span class="font-weight-bold">Time Limit: </span> {{floor($quiz->time_limit/60)}} Hours {{$quiz->time_limit%60}} minutes</p>
                         <p><span class="font-weight-bold">Items: </span> {{count($quiz->question)}}</p>

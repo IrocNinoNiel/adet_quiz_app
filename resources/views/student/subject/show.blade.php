@@ -22,7 +22,7 @@
                         <div class="row">
                             @foreach ($subject->quiz as $quiz)
                                 @if(date('Y-m-d H:i:s') < $quiz->end_date && date('Y-m-d H:i:s') < $quiz->start_date )
-                                 
+
                                     <div class="col-md-4 my-3">
                                         <button class="btn btn-success text-light pl-5 pr-5" disabled>{{$quiz->title}}</button>
                                     </div> 
@@ -36,7 +36,7 @@
                             @foreach ($subject->quiz as $quiz)
                                 @if(date('Y-m-d H:i:s') < $quiz->end_date && date('Y-m-d H:i:s') >= $quiz->start_date )
                                     <div class="col-md-4 my-3">
-                                        <a href="{{route('studentquiz.index',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</a>
+                                        <a href="{{route('studentquiz.index',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5" data-toggle="tooltip" data-placement="right" title="Tooltip on right">{{$quiz->title}}</a>
                                     </div> 
                                 @endif
                             @endforeach
