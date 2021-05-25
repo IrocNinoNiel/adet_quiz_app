@@ -44,23 +44,23 @@ class TeacherSubjectController extends Controller
             return $randomString;
         }
 
-        // $this->validate($request,[
-        //     'subjectName'=>'required|min:1',
-        //     'subjectDsc'=>'required:min:1',
-        // ]);
+        $this->validate($request,[
+            'subjectName'=>'required|min:1',
+            'subjectDsc'=>'required:min:1',
+        ]);
 
-        $errors = array();
-        if( $request->subjectName == null){
-            array_push($errors,'Invalid Subject Name');
-        }
+        // $errors = array();
+        // if( $request->subjectName == null){
+        //     array_push($errors,'Invalid Subject Name');
+        // }
 
-        if( $request->subjectDsc == null){
-            array_push($errors,'Invalid Subject Description');
-        }
+        // if( $request->subjectDsc == null){
+        //     array_push($errors,'Invalid Subject Description');
+        // }
 
-        if(count($errors) > 0){
-            return back()->with('error',$errors);
-        }
+        // if(count($errors) > 0){
+        //     return back()->with('error',$errors);
+        // }
         $code = generateRandomString(6);
 
         $subject = new Subject;
