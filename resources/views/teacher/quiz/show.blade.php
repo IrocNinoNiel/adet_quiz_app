@@ -17,10 +17,14 @@
             <div class="col-md-9 border-left">
                 
                 <div class="container-fluid">
-                    <h2>@if (date('Y-m-d H:i:s') < $quiz->end_date)
-                        OPEN
-                    @else
+                    <h2>@if (date('Y-m-d H:i:s') > $quiz->end_date)
                         CLOSE
+                    @else
+                        @if(date('Y-m-d H:i:s') < $quiz->start_date)
+                            UPCOMING
+                        @else
+                            OPEN
+                        @endif
                     @endif > {{$quiz->title}}</h2>
                     <hr/>
                     <br/>
@@ -62,7 +66,7 @@
                         <table class="table">
                             <thead class="thead bg-success">
                                 <tr>
-                                    <th scope="col" colspan="2">Name</th>
+                                    <th scope="col" colspan="2">Name({{count($studentInfo)}})</th>
                                     <th scope="col">Score</th>
                                 </tr>
                             </thead>

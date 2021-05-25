@@ -25,9 +25,7 @@
                         </div>
                         
                         <div class="container text-center mb-3 mt-5">
-                            @if ($quiz->can_see_points == 1)
-                                <a href="{{ route('studentquiz.score',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" type="button" class="btn btn-success">View Score</a>
-                            @endif
+                            <a href="{{ route('studentquiz.score',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" type="button" class="btn btn-success">View Score</a>
                         </div>
                         
                         <div class="container text-center">

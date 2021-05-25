@@ -14,31 +14,30 @@
                 <div class="container-scroll" id="style-1">
                     <div class="container-fluid">
                         <h1>Created Quiz</h1>
-                        
                         <div class="col-md-9 mx-auto">
                             <form action="{{ route('teacherquiz.store',$subject->id )}}" method="POST">
                                @csrf
                                 <div class="form-group row">
                                     <label for="note" class="col-sm-3 col-form-label">Note: </label>
                                     <div class="col-sm-9">
-                                      <input type="text" class="form-control" name="note">
+                                      <input type="text" class="form-control" name="note" required value="{{@old('note')}}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="exampleFormControlSelect1" class="col-sm-3 col-form-label">Time Limit</label>
                                     <div class="col-sm-9">
-                                        <input type="time" id="appt" name="appt" min="09:00" max="18:00" required class="form-control" placeholder="HH:MM">
+                                        <input type="time" id="appt" name="appt" min="09:00" max="18:00" required class="form-control" placeholder="HH:MM" value="{{@old('appt')}}">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="exampleFormControlSelect2" class="col-sm-3 col-form-label">Attempts Allowed</label>
                                     <div class="col-sm-9">
                                         <select class="form-control" name="attempt">
-                                            <option>1</option>
-                                            <option>2</option>
-                                            <option>3</option>
-                                            <option>4</option>
-                                            <option>5</option>
+                                            <option @if(old('attempt') == 1) selected @endif>1</option>
+                                            <option @if(old('attempt') == 2) selected @endif>2</option>
+                                            <option @if(old('attempt') == 3) selected @endif>3</option>
+                                            <option @if(old('attempt') == 4) selected @endif>4</option>
+                                            <option @if(old('attempt') == 5) selected @endif>5</option>
                                         </select>
                                     </div>
                                 </div>

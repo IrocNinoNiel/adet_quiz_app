@@ -12,7 +12,6 @@
                         <p>{{$subject->description}}</p>
                     </div>
                 </div>
-                
             </div>
             <div class="col-md-9 border-left ">
                 <div class="container-scroll" id="style-1">
@@ -30,18 +29,46 @@
                     </div> --}}
 
                     @if(count($quiz->attempt) < $quiz->num_of_attempt)
-                        <div class="container text-center mb-4">
-                            <form action="{{route('studentquiz.attemptdateinfo',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" method="post">
+                        <div class="d-flex container text-center mb-4 justify-content-center">
+                            @if (count($attempt) > 0)
+                                <div class="col-auto">
+                                    <table class="table table-responsive">
+                                        <tr>
+                                            <td>
+                                                <form action="{{route('studentquiz.attemptdateinfo',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" method="post">
+                                                @csrf
+                                                <button type="submit" class="btn btn-primary">Attempt Quiz</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <a href="{{route('studentquiz.viewscore',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success">View Score</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            @else
+                                <form action="{{route('studentquiz.attemptdateinfo',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" method="post">
                                 @csrf
                                 <button type="submit" class="btn btn-primary">Attempt Quiz</button>
-                            </form>
+                                </form>
+                            @endif
                         </div>
                     @else
-                    <div class="container text-center mb-4">
-                        <button class="btn btn-danger" disabled>Attempt is Over</button>
+                    <div class="d-flex container text-center mb-4 justify-content-center">
+                        <div class="col-auto">
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-danger" disabled>Attempt is Over</button>
+                                    </td>
+                                    <td>
+                                        <a href="{{route('studentquiz.viewscore',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success">View Score</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                     @endif
-
                     <div class="container text-center">
                         <a href="{{route('studentsubject.show',$subject->id)}}" type="button" class="btn btn-warning">Cancel</a>
                     </div>

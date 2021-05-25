@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Quiz;
 use App\Models\Answer;
 use App\Models\Subject;
@@ -55,9 +56,9 @@ class TeacherQuizController extends Controller
                 array_push($error,'Some Question is Empty');
             }
 
-            if(is_null($request->input('checkboxQuiz2')) && is_null($request->input('checkboxQuiz1'))){
-                array_push($error,'Please Check at least one Option in the Student Can See Option');
-            }
+            // if(is_null($request->input('checkboxQuiz2')) && is_null($request->input('checkboxQuiz1'))){
+            //     array_push($error,'Please Check at least one Option in the Student Can See Option');
+            // }
 
             $chunck = array_chunk($request->input('ischeck'),4);
 
@@ -71,7 +72,7 @@ class TeacherQuizController extends Controller
             }
 
             $array = array(
-                'customRadio'=>$request->customRadio,
+                'customRadio'=>1,
                 'checkboxQuiz1'=>$request->checkboxQuiz1 ?? 0,
                 'checkboxQuiz2'=>$request->checkboxQuiz2 ?? 0,
                 'quizTitle'=>$request->quizTitle,
@@ -112,7 +113,7 @@ class TeacherQuizController extends Controller
             $answerArray = array_chunk($request->input('option'),4);
             $correctArray = array_chunk($request->input('ischeck'),4);
             $pointsArray = $request->quizPts;
-            $remarkOption= $request->customRadio;
+            $remarkOption= 1;
             $answerOption= $request->checkboxQuiz1 ?? 0;
             $pointsOption = $request->checkboxQuiz2 ?? 0;
 
@@ -176,7 +177,7 @@ class TeacherQuizController extends Controller
             $answerArray = array_chunk($request->input('option'),4);
             $correctArray = array_chunk($request->input('ischeck'),4);
             $pointsArray = $request->quizPts;
-            $remarkOption= $request->customRadio;
+            $remarkOption= 1;
             $answerOption= $request->checkboxQuiz1 ?? 0;
             $pointsOption = $request->checkboxQuiz2 ?? 0;
 
@@ -222,37 +223,44 @@ class TeacherQuizController extends Controller
     }
 
     public function store(Request $request)
-    {
-
+    {   
+        
         $this->validate($request,[
             'note'=>'required',
             'appt'=>'required',
             'attempt'=>'required',
-            'AvOn'=>'required',
-            'AvUntil'=>'required'
+            'AvOn'=>'required|after_or_equal:'.date('Y-m-d H:i:s'),
+            'AvUntil'=>'required|after:AvOn|after_or_equal:'.date('Y-m-d H:i:s')
+        ],[
+            'AvOn.after_or_equal' => "Start Date time must be atleast 2 minutes advanced than the current time",
+            'AvUntil.after_or_equal' => "End Date must be After Today's Date",
+            'AvOn.required' => 'Please Put Start Date',
+            'AvUntil.required' => 'Please Put End Date',
+            'AvUntil.after' => 'End Date Must Be After Start Date'
         ]);
 
         $value = session('array');
         
         $time = explode(':', $request->appt);
         $minutes = ($time[0] * 60 + $time[1] * 1);
-        $isTimeInvalid =  $request->AvOn > $request->AvUntil;
+        $start = new Carbon(strtotime($request->AvOn));
+        $now = Carbon::now();
+        // $isTimeInvalid =  $request->AvOn > $request->AvUntil;
         
-        $errors =  array();
+        // $errors =  array();
 
-        // return date('Y-m-d H:i:s' , strtotime($request->AvOn));
-
+       
         if($minutes < 1) {
-            array_push($errors,'Time limit must be More than 1 minute');
+            return back()->with('error',"Time Limit Must be not equal to 0")->withInput();
         }
 
-        if($isTimeInvalid) {
-            array_push($errors,'Date Start Must be early than the Date End');
-        }
+        // if($isTimeInvalid) {
+        //     array_push($errors,'Date Start Must be early than the Date End');
+        // }
 
-        if(count($errors) > 0) {
-            return back()->with('errors',$errors);
-        }
+        // if(count($errors) > 0) {
+        //     return back()->with('errors',$errors);
+        // }
 
         function generateRandomString($length = 25) {
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -412,7 +420,7 @@ class TeacherQuizController extends Controller
             }
 
             $array = array(
-                'customRadio'=>$request->customRadio,
+                'customRadio'=>1,
                 'checkboxQuiz1'=>$request->checkboxQuiz1 ?? 0,
                 'checkboxQuiz2'=>$request->checkboxQuiz2 ?? 0,
                 'quizTitle'=>$request->quizTitle,
@@ -466,7 +474,7 @@ class TeacherQuizController extends Controller
         }
 
         if(count($errors) > 0) {
-            return back()->with('errors',$errors);
+            return back()->with('errors1',$errors);
         }
 
       

@@ -15,7 +15,7 @@
                             <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
 
                             <div class="col-md-6">
-                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
+                                <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" autocomplete="name" autofocus>
 
                                 @error('name')
                                     <span class="invalid-feedback" role="alert">
@@ -29,7 +29,7 @@
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
 
                             <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" autocomplete="email">
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
@@ -43,10 +43,10 @@
                             <label for="userType" class="col-md-4 col-form-label text-md-right">{{ __('Type of User') }}</label>
 
                             <div class="col-md-6">
-                                <select id="userType" name="userType" class="col-md-8 col-form-label text-md-right  @error('userType') is-invalid @enderror" aria-label=".form-select-lg example">
-                                    <option selected>Open this select menu</option>
-                                    <option value=2>Teacher</option>
-                                    <option value=3>Student</option>
+                                <select id="userType" name="userType" class="form-control col-md-8 col-form-label text-md-right  @error('userType') is-invalid @enderror" aria-label=".form-select-lg example">
+                                    <option @if(old('userType') == null) selected @endif>Open this select menu</option>
+                                    <option @if(old('userType') == 2) selected @endif value=2>Teacher</option>
+                                    <option @if(old('userType') == 3) selected @endif value=3>Student</option>
                                 </select>
 
                                 @error('userType')
@@ -61,8 +61,7 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
-
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" autocomplete="new-password">
                                 @error('password')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -75,7 +74,7 @@
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" autocomplete="new-password">
                             </div>
                         </div>
 

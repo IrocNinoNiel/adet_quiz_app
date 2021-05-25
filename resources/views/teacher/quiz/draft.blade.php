@@ -16,15 +16,6 @@
                     <div class="container bg-light-greenapple my-1 py-1 px-3">
                         <h5 class="font-weight-bold">Quiz option</h5>
                         <div class="my-3"> 
-                            <h6>Release Remark</h6>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="remark1" name="customRadio" class="custom-control-input" value="1" @if($draft->when_release_remark == 1)  checked @endif>
-                                    <label class="custom-control-label" for="remark1">Immediately after Submission</label>
-                                </div>
-                                <div class="custom-control custom-radio">
-                                    <input type="radio" id="remark2" name="customRadio" class="custom-control-input" value="2" @if($draft->when_release_remark == 2)  checked @endif>
-                                    <label class="custom-control-label" for="remark2">Later After Submission</label>
-                                </div>
                         </div>
                         <div class="my-3"> 
                             <h6>Student can see</h6>

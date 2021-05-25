@@ -9,8 +9,6 @@
                     <a href="{{ route('studentsubject.show',$subject->id)}}" class="btn"><h3>{{$subject->name}}</h3></a>
                     <div class="container m-3 text-center">
                         <div class="container-fluid bg-dark-green text-light my-4"><h4 class="">Quiz-FL-4</h4></div>
-                        <h6 class="">Submitted on: {{$finish->created_at}}</h6>
-                        <h6 class="">Time Taken: {{$finish->created_at->diffForHumans($attempt->created_at,true)}}</h6>
                     </div>
                 </div>
                 
@@ -32,23 +30,29 @@
                                         <li class="list-inline-item text-secondary ml-8">@if($quiz->can_see_points == 1) {{$arrAnswer[$loop->index]['points']}}/{{$question->points}}@endif</li>
                                     </ul>
                                     <div class="container">
-                                        @foreach ($question->answer as $answer)
+                                        @if(date('Y-m-d H:i:s') > $quiz->end_date || count($num_of_attempt) == $quiz->num_of_attempt)
+                                            @foreach ($question->answer as $answer)
+                                                <div class="custom-control custom-radio">
+                                                    <input type="radio" id="customRadio{{$answer->id}}" name="customRadio" class="custom-control-input">
+                                                    @if($arrAnswer[$loop->parent->index]['answer_id'] == $answer->id || $answer->is_right == 1) 
+                                                        <label class="custom-control-label @if($answer->is_right == 1) bg-success @else bg-danger @endif" for="customRadio1{{$answer->id}}">{{$answer->description}}</label>
+                                                    
+                                                    @else
+                                                        <label class="custom-control-label " for="customRadio1{{$answer->id}}">{{$answer->description}}</label>    
+                                                    @endif
+                                                </div>
+                                            @endforeach
+                                        @else
+                                            @foreach ($question->answer as $answer)
                                             <div class="custom-control custom-radio">
                                                 <input type="radio" id="customRadio{{$answer->id}}" name="customRadio" class="custom-control-input">
-                                                @if($arrAnswer[$loop->parent->index]['answer_id'] == $answer->id || $answer->is_right == 1) 
-                                                    <label class="custom-control-label @if($answer->is_right == 1) bg-success @else bg-danger @endif" for="customRadio1{{$answer->id}}">{{$answer->description}}</label>
-                                                
-                                                @else
-                                                    <label class="custom-control-label " for="customRadio1{{$answer->id}}">{{$answer->description}}</label>    
-                                                @endif
-                                                
+                                                <label class="custom-control-label " for="customRadio1{{$answer->id}}">{{$answer->description}}</label>   
                                             </div>
                                         @endforeach
+                                        @endif
                                     </div>
                                 @endforeach
                             @endif
-
-        
                         <div class="container text-center">
                             <a href="{{route('studentsubject.show',$subject->id)}}" type="button" class="btn btn-warning">Done</a>
                         </div>

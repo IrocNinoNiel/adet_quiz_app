@@ -48,6 +48,7 @@ Route::group(['middleware' => 'CheckRole:student'],function(){
 
     // student quiz routes
     Route::get('/studentquiz/{subid}/attempt/{quizid}',[App\Http\Controllers\StudentQuizController::class,'index'])->name('studentquiz.index');
+    Route::get('/studentquiz/{subid}/viewscore/{quizid}',[App\Http\Controllers\StudentQuizController::class,'viewscore'])->name('studentquiz.viewscore');
     Route::post('/studentquiz/{subid}/attempt/{quizid}',[App\Http\Controllers\StudentQuizController::class,'attemptDateInfo'])->name('studentquiz.attemptdateinfo');
     Route::get('/studentquiz/{subid}/answer/{quizid}',[App\Http\Controllers\StudentQuizController::class,'answer'])->name('studentquiz.answer');
     Route::post('/studentquiz/{subid}/submit/{quizid}',[App\Http\Controllers\StudentQuizController::class,'submit'])->name('studentquiz.submit');

@@ -29,12 +29,14 @@ class StudentQuizController extends Controller
         $subject = Subject::find($subid);
         $quiz = Quiz::find($quizid);
 
+        $quizattempt = StudentAttempt::where('user_id','=',Auth::user()->id)->where('quiz_id','=',$quiz->id)->where('status','=',1)->get();
+
         // Check if Student is a Member or not
         if(count($subject->member()) < 1){
             return abort(401);
         }
 
-        return view('student.quiz.attempt')->with('subject',$subject)->with('quiz',$quiz);
+        return view('student.quiz.attempt')->with('subject',$subject)->with('quiz',$quiz)->with('attempt',$quizattempt);
     }
 
     public function attemptDateInfo($subid,$quizid)
@@ -206,4 +208,30 @@ class StudentQuizController extends Controller
     }
 
 
+    public function viewscore($subid,$quizid){
+        $subject = Subject::find($subid);
+        $quiz = Quiz::find($quizid);
+
+        // Check if Student is a Member or not
+        if(count($subject->member()) < 1){
+            return abort(401);
+        }
+
+        $quizattempt = StudentAttempt::where('user_id','=',Auth::user()->id)->where('quiz_id','=',$quiz->id)->where('status','=',1)->get();
+
+        $attemptNum = StudentAttempt::where('user_id','=',Auth::user()->id)->where('quiz_id','=',$quiz->id)->get();
+
+        if(count($quizattempt) < 1){
+            return back()->with('error','No Records Found, you did not take the quiz');
+        }
+
+        $studentAnswer = StudentAnswer::where('user_id','=',Auth::user()->id)->where('student_attempt_id','=',$quizattempt[0]->id)->get();
+
+        $arrAnswer = array();
+
+        foreach($studentAnswer as $ans){
+            array_push($arrAnswer,['points'=>$ans->points,'answer_id'=>$ans->answer_id]);
+        }
+        return view('student.quiz.viewscore')->with('subject',$subject)->with('quiz',$quiz)->with('arrAnswer',$arrAnswer)->with('arrTotal',$studentAnswer)->with('num_of_attempt',$attemptNum);
+    }
 }

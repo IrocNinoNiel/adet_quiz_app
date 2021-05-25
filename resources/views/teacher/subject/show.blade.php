@@ -37,11 +37,24 @@
             </div>
             <div class="col-md-9 border-left">
                 <div class="container-scroll" id="style-1">
+                    <h3 class=" pb-2">Upcoming Quizzes</h3>
+                    <div class="container">
+                        <div class="row">
+                            @foreach ($subject->quiz as $quiz)
+                                <br>
+                                @if(date('Y-m-d H:i:s') < $quiz->end_date && date('Y-m-d H:i:s') < $quiz->start_date )
+                                    <div class="col-md-4 my-3">
+                                        <a href="{{route('teacherquiz.show',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</a>
+                                    </div> 
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
                     <h3 class=" pb-2">Ongoing Quizzes</h3>
                     <div class="container">
                         <div class="row">
                             @foreach ($subject->quiz as $quiz)
-                                @if(date('Y-m-d H:i:s') < $quiz->end_date)
+                                @if(date('Y-m-d H:i:s') < $quiz->end_date && date('Y-m-d H:i:s') >= $quiz->start_date )
                                     <div class="col-md-4 my-3">
                                         <a href="{{route('teacherquiz.show',['subid'=>$subject->id,'quizid'=>$quiz->id] )}}" class="btn btn-success text-light pl-5 pr-5">{{$quiz->title}}</a>
                                     </div> 
