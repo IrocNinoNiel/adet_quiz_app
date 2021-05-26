@@ -26,7 +26,9 @@
                                     <ul class="list-inline">
                                             <input type="hidden" name="question[]" value={{$question->id}}>
                                             <li class="list-inline-item">{{$loop->iteration}}. {{$question->description}}?</li>
-                                            <li class="list-inline-item text-secondary ml-8">{{$question->points}} points</li>
+                                            @if($quiz->can_see_points == 1)
+                                                <li class="list-inline-item text-secondary ml-8">{{$question->points}} points</li>
+                                            @endif
                                     </ul>
                                     <div class="container">
                                         @foreach ($question->answer as $answer)
